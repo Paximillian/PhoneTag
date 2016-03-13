@@ -64,6 +64,9 @@
     <DebugSymbols>False</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="App42_CSHARP_SDK_2.2">
+      <HintPath>..\..\..\..\..\..\..\Program Files\App42\App42_CSHARP_SDK-master\2.2\App42_CSHARP_SDK_2.2.dll</HintPath>
+    </Reference>
     <Reference Include="DeviceMotion.Plugin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xam.Plugin.DeviceMotion.1.0.3\lib\MonoAndroid10\DeviceMotion.Plugin.dll</HintPath>
       <Private>True</Private>

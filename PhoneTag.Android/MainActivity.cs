@@ -72,7 +72,8 @@ namespace PhoneTag.Android
 
         private async void checkServerStatus()
         {
-            while (true) {
+            while (true)
+            {
                 using (HttpClient client = new HttpClient())
                 {
                     bool result = await client.GetMethodAsync("service");

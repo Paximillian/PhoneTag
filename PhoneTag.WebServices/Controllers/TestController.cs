@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using static StackExchange.Redis.Geo.RedisGeoExtensions;
+using com.shephertz.app42.paas.sdk.csharp;
+using com.shephertz.app42.paas.sdk.csharp.user;
 
 namespace PhoneTag.WebServices.Controllers
 {
@@ -29,6 +31,8 @@ namespace PhoneTag.WebServices.Controllers
 
         private async void init()
         {
+            App42API.Initialize("b7cce3f56c238389790ccef2a13c69fe88cb9447523730b6e93c849a6d0bd510", "e6672070bad36d0940805bff5d81fa3d9d66e440913301f1f438ad937b5d8502");
+
             s_Message = await Redis.Init();
         }
 

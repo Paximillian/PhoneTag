@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceTest", "..\WebServiceTest\WebServiceTest\WebServiceTest.csproj", "{BDFA8754-74B8-4ACB-8D56-8A18D214E965}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneTag.WebServices", "PhoneTag.WebServices\PhoneTag.WebServices.csproj", "{7454FD4C-EDC7-4F7A-B6CB-BEA24F25907B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneTag.TypeDefs", "PhoneTag.SharedCodebase\PhoneTag.TypeDefs.csproj", "{359EB0C1-D293-4DCE-961C-8B6A52BB0277}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneTag.Android", "PhoneTag.Android\PhoneTag.Android.csproj", "{143BEBA3-722C-4B23-AC34-396D134FB5D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServiceTest", "WebServiceTest\WebServiceTest\WebServiceTest.csproj", "{BDFA8754-74B8-4ACB-8D56-8A18D214E965}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BDFA8754-74B8-4ACB-8D56-8A18D214E965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BDFA8754-74B8-4ACB-8D56-8A18D214E965}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BDFA8754-74B8-4ACB-8D56-8A18D214E965}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BDFA8754-74B8-4ACB-8D56-8A18D214E965}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7454FD4C-EDC7-4F7A-B6CB-BEA24F25907B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7454FD4C-EDC7-4F7A-B6CB-BEA24F25907B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7454FD4C-EDC7-4F7A-B6CB-BEA24F25907B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,6 +31,10 @@ Global
 		{143BEBA3-722C-4B23-AC34-396D134FB5D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{143BEBA3-722C-4B23-AC34-396D134FB5D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{143BEBA3-722C-4B23-AC34-396D134FB5D3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BDFA8754-74B8-4ACB-8D56-8A18D214E965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDFA8754-74B8-4ACB-8D56-8A18D214E965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDFA8754-74B8-4ACB-8D56-8A18D214E965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDFA8754-74B8-4ACB-8D56-8A18D214E965}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
