@@ -8,18 +8,23 @@ using System.Web.Http;
 using static StackExchange.Redis.Geo.RedisGeoExtensions;
 using com.shephertz.app42.paas.sdk.csharp;
 using com.shephertz.app42.paas.sdk.csharp.user;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace PhoneTag.WebServices.Controllers
 {
     public class TestController : ApiController
     {
+        protected static IMongoClient _client;
+        protected static IMongoDatabase _database;
+
         private string s_Message;
 
         [Route("api/ping")]
         [HttpGet]
         public string Ping()
         {
-            return "pong";
+            return "pong " + _database.ListCollections().ToString();
         }
         [Route("api/init")]
         [HttpGet]
@@ -32,6 +37,9 @@ namespace PhoneTag.WebServices.Controllers
         private async void init()
         {
             App42API.Initialize("b7cce3f56c238389790ccef2a13c69fe88cb9447523730b6e93c849a6d0bd510", "e6672070bad36d0940805bff5d81fa3d9d66e440913301f1f438ad937b5d8502");
+            
+            _client = new MongoClient("http://ec2-54-93-86-123.eu-central-1.compute.amazonaws.com");
+            _database = _client.GetDatabase("local");
 
             s_Message = await Redis.Init();
         }

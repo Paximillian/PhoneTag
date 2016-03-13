@@ -12,7 +12,7 @@ namespace PhoneTag.SharedCodebase
     public static class HttpExtensions
     {
         //public const String BaseUri = "http://localhost:50484/api/";
-        public const String BaseUri = "http://ec2-54-93-72-104.eu-central-1.compute.amazonaws.com/api/";
+        public const String BaseUri = "http://ec2-54-93-86-123.eu-central-1.compute.amazonaws.com/api/";
 
         /// <summary>
         /// Sends a POST request to the given http resource with an optional parameter.
