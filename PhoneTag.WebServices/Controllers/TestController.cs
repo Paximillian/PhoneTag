@@ -22,9 +22,9 @@ namespace PhoneTag.WebServices.Controllers
 
         [Route("api/ping")]
         [HttpGet]
-        public string Ping()
+        public async Task<string> Ping()
         {
-            return "pong " + _database.ListCollections().ToString();
+            return "pong " + await pong();
         }
         [Route("api/init")]
         [HttpGet]
@@ -34,14 +34,39 @@ namespace PhoneTag.WebServices.Controllers
             return s_Message;
         }
 
-        private async void init()
+        private async Task<string> pong()
         {
-            App42API.Initialize("b7cce3f56c238389790ccef2a13c69fe88cb9447523730b6e93c849a6d0bd510", "e6672070bad36d0940805bff5d81fa3d9d66e440913301f1f438ad937b5d8502");
+            var collection = _database.GetCollection<BsonDocument>("myCollection");
+            var filter = new BsonDocument();
+
+            s_Message = "";
+
+            using (var cursor = await collection.FindAsync(filter))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    var batch = cursor.Current;
+                    foreach (var document in batch)
+                    {
+                        // process document
+                        BsonElement res = new BsonElement("x", "error");
+                        document.TryGetElement("x", out res);
+                        s_Message += res.Value;
+                    }
+                }
+            }
+
+            return s_Message;
+        }
+
+        private void init()
+        {
+            //App42API.Initialize("b7cce3f56c238389790ccef2a13c69fe88cb9447523730b6e93c849a6d0bd510", "e6672070bad36d0940805bff5d81fa3d9d66e440913301f1f438ad937b5d8502");
             
-            _client = new MongoClient("http://ec2-54-93-86-123.eu-central-1.compute.amazonaws.com");
+            _client = new MongoClient();
             _database = _client.GetDatabase("local");
 
-            s_Message = await Redis.Init();
+            //s_Message = await Redis.Init();
         }
 
         [Route("api/test/clear")]
