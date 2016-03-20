@@ -33,6 +33,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/button5"
         android:enabled="false" />
+<!--<TextField
+        android:text="testing123"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textDieldTest123"
+        android:enabled="true" />-->
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
