@@ -11,7 +11,7 @@ namespace PhoneTag.WebServices.Controllers
         // GET api/values
         public bool Get()
         {
-            return Redis.IsReady;
+            return Mongo.IsReady;
         }
     }
 }

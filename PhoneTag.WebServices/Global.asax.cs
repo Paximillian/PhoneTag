@@ -13,7 +13,7 @@ namespace PhoneTag.WebServices
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            Redis.Init();
+            Mongo.Init();
         }
     }
 }

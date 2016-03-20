@@ -1,12 +1,10 @@
 ﻿using PhoneTag.SharedCodebase;
-using StackExchange.Redis.Geo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using static StackExchange.Redis.Geo.RedisGeoExtensions;
 
 namespace PhoneTag.WebServices.Controllers
 {
@@ -24,12 +22,12 @@ namespace PhoneTag.WebServices.Controllers
             return "value";
         }
 
-        [Route("api/game/position")]
-        [HttpPost]
-        public void PositionUpdate([FromBody]Point r)
-        {
-            Redis.Database.GeoAdd("Test", new GeoLocation { Name = "Player", Longitude = r.X, Latitude = r.Y });
-        }
+        //[Route("api/game/position")]
+        //[HttpPost]
+        //public void PositionUpdate([FromBody]Point r)
+        //{
+        //    Redis.Database.GeoAdd("Test", new GeoLocation { Name = "Player", Longitude = r.X, Latitude = r.Y });
+        //}
 
         [Route("api/game/shoot")]
         [HttpPost]

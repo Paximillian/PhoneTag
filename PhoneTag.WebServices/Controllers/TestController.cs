@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using static StackExchange.Redis.Geo.RedisGeoExtensions;
 using com.shephertz.app42.paas.sdk.csharp;
 using com.shephertz.app42.paas.sdk.csharp.user;
 using MongoDB.Bson;
@@ -15,31 +14,36 @@ namespace PhoneTag.WebServices.Controllers
 {
     public class TestController : ApiController
     {
-        protected static IMongoClient _client;
-        protected static IMongoDatabase _database;
-
         private string s_Message;
 
         [Route("api/ping")]
         [HttpGet]
         public async Task<string> Ping()
         {
-            return "pong " + await pong();
+            await ping();
+            return "ping";
         }
+
+        private Task ping()
+        {
+            Mongo.Database.GetCollection<BsonDocument>("myCollection");
+
+        }
+
         [Route("api/init")]
         [HttpGet]
         public string Init()
         {
-            init();
-            return s_Message;
+            return Mongo.Init();
         }
 
         private async Task<string> pong()
         {
-            var collection = _database.GetCollection<BsonDocument>("myCollection");
-            var filter = new BsonDocument();
-
-            s_Message = "";
+            IMongoCollection<BsonDocument> collection = Mongo.Database.GetCollection<BsonDocument>("myCollection");
+            
+            string message = "";
+            
+            collection.InsertManyAsync(new List<BsonDocument>() { null }, )
 
             using (var cursor = await collection.FindAsync(filter))
             {
@@ -51,49 +55,39 @@ namespace PhoneTag.WebServices.Controllers
                         // process document
                         BsonElement res = new BsonElement("x", "error");
                         document.TryGetElement("x", out res);
-                        s_Message += res.Value;
+                        message += res.Value;
                     }
                 }
             }
 
-            return s_Message;
+            return message;
         }
 
-        private void init()
-        {
-            //App42API.Initialize("b7cce3f56c238389790ccef2a13c69fe88cb9447523730b6e93c849a6d0bd510", "e6672070bad36d0940805bff5d81fa3d9d66e440913301f1f438ad937b5d8502");
-            
-            _client = new MongoClient();
-            _database = _client.GetDatabase("local");
+        //[Route("api/test/clear")]
+        //[HttpPost]
+        //public void ClearPositions()
+        //{
+        //    Redis.Database.KeyDelete("Test");
+        //}
 
-            //s_Message = await Redis.Init();
-        }
+        //[Route("api/test/position/{i_PlayerId}")]
+        //[HttpPost]
+        //public Point PositionUpdate([FromBody]Point i_PlayerLocation, int i_PlayerId)
+        //{
+        //    Redis.Database.GeoAdd("Test", new GeoLocation { Name = String.Format("{0}", i_PlayerId), Longitude = i_PlayerLocation.X, Latitude = i_PlayerLocation.Y });
 
-        [Route("api/test/clear")]
-        [HttpPost]
-        public void ClearPositions()
-        {
-            Redis.Database.KeyDelete("Test");
-        }
+        //    return i_PlayerLocation;
+        //}
 
-        [Route("api/test/position/{i_PlayerId}")]
-        [HttpPost]
-        public Point PositionUpdate([FromBody]Point i_PlayerLocation, int i_PlayerId)
-        {
-            Redis.Database.GeoAdd("Test", new GeoLocation { Name = String.Format("{0}", i_PlayerId), Longitude = i_PlayerLocation.X, Latitude = i_PlayerLocation.Y });
+        //[Route("api/test/shoot/{i_PlayerId}")]
+        //[HttpPost]
+        //public String Shoot([FromBody]DeviceLocationInfo i_PlayerLocation, int i_PlayerId)
+        //{
+        //    List<string> hits = Redis.Database.GeoRadius("Test", i_PlayerLocation.DeviceLocation.X, i_PlayerLocation.DeviceLocation.Y, 20000000).ToList();
 
-            return i_PlayerLocation;
-        }
+        //    hits = hits.Where((hitName) => !hitName.Equals(i_PlayerId.ToString())).ToList();
 
-        [Route("api/test/shoot/{i_PlayerId}")]
-        [HttpPost]
-        public String Shoot([FromBody]DeviceLocationInfo i_PlayerLocation, int i_PlayerId)
-        {
-            List<string> hits = Redis.Database.GeoRadius("Test", i_PlayerLocation.DeviceLocation.X, i_PlayerLocation.DeviceLocation.Y, 20000000).ToList();
-
-            hits = hits.Where((hitName) => !hitName.Equals(i_PlayerId.ToString())).ToList();
-
-            return hits.Count > 0 ? hits[0] : "No hits";
-        }
+        //    return hits.Count > 0 ? hits[0] : "No hits";
+        //}
     }
 }
