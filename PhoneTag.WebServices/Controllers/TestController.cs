@@ -1,12 +1,11 @@
 ﻿using PhoneTag.SharedCodebase;
+using PhoneTag.SharedCodebase.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using com.shephertz.app42.paas.sdk.csharp;
-using com.shephertz.app42.paas.sdk.csharp.user;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -14,61 +13,83 @@ namespace PhoneTag.WebServices.Controllers
 {
     public class TestController : ApiController
     {
-        private string s_Message;
-
-        [Route("api/ping")]
+        [Route("api/test/ping")]
         [HttpGet]
         public async Task<string> Ping()
         {
-            await ping();
-            return "ping";
+            string res = await ping();
+            return "ping: " + res;
         }
-
-        private Task ping()
-        {
-            Mongo.Database.GetCollection<BsonDocument>("myCollection");
-            return new Task(() => { });
-        }
-
-        [Route("api/init")]
+        [Route("api/test/pong")]
         [HttpGet]
-        public string Init()
+        public async Task<string> Pong()
         {
-            return Mongo.Init();
+            string res = await pong();
+            return "pong: " + res;
         }
+
+        private async Task<string> ping()
+        {
+            try {
+                var col = Mongo.Database.GetCollection<BsonDocument>("myCollection");
+                CreateIndexOptions creationOptions = new CreateIndexOptions();
+                creationOptions.ExpireAfter = new TimeSpan(TimeSpan.TicksPerSecond * 5);
+                IndexKeysDefinition<BsonDocument> keys = Builders<BsonDocument>.IndexKeys.Ascending("id");
+                await col.Indexes.DropAllAsync();
+                await col.Indexes.CreateOneAsync(keys, creationOptions);
+                for (int i = 0; i < 10; ++i)
+                {
+                    col.InsertOne(new BsonDocument { { "id", DateTime.Now.AddSeconds(i) }, { "User", new User("user"+ i.ToString()).ToBsonDocument() } });
+                }
+            }
+            catch(Exception e)
+            {
+                return "error is: " + e.Message;
+            }
+
+            return "";
+        }
+
+        //[Route("api/init")]
+        //[HttpGet]
+        //public string Init()
+        //{
+        //    return Mongo.Init();
+        //}
 
         private async Task<string> pong()
         {
             IMongoCollection<BsonDocument> collection = Mongo.Database.GetCollection<BsonDocument>("myCollection");
             
             string message = "";
-            
-            //collection.InsertManyAsync(new List<BsonDocument>() { null }, )
 
-            //using (var cursor = await collection.FindAsync(filter))
-            //{
-            //    while (await cursor.MoveNextAsync())
-            //    {
-            //        var batch = cursor.Current;
-            //        foreach (var document in batch)
-            //        {
-            //            // process document
-            //            BsonElement res = new BsonElement("x", "error");
-            //            document.TryGetElement("x", out res);
-            //            message += res.Value;
-            //        }
-            //    }
-            //}
+            try {
+                BsonDocument filter = new BsonDocument();
+
+                using (IAsyncCursor<BsonDocument> cursor = await collection.FindAsync(filter))
+                {
+                    await cursor.ForEachAsync(document =>
+                    {
+                        // process document
+                        message += document.ToJson() + Environment.NewLine;
+                    });
+                }
+            }
+            catch(Exception e)
+            {
+                message = "The error is: " + e.Message;
+            }
 
             return message;
         }
 
-        //[Route("api/test/clear")]
-        //[HttpPost]
-        //public void ClearPositions()
-        //{
-        //    Redis.Database.KeyDelete("Test");
-        //}
+        [Route("api/test/clear")]
+        [HttpGet]
+        public async Task<string> ClearPositions()
+        {
+            await Mongo.Database.GetCollection<BsonDocument>("myCollection").DeleteManyAsync(new BsonDocument());
+            return "cleared";
+        }
 
         //[Route("api/test/position/{i_PlayerId}")]
         //[HttpPost]

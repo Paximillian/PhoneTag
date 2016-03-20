@@ -34,9 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DeviceLocationInfo.cs" />
-    <Compile Include="HttpExtensions.cs" />
-    <Compile Include="Point.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\Utility\DeviceLocationInfo.cs" />
+    <Compile Include="Extensions\HttpExtensions.cs" />
+    <Compile Include="Model\Utility\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

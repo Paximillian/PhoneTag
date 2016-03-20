@@ -64,5 +64,22 @@ namespace PhoneTag.SharedCodebase
             string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             return JsonConvert.DeserializeObject(jsonResponse);
         }
+
+        /// <summary>
+        /// Sends a GET request to the given http resource with an optional parameter.
+        /// An overloading of GetMethodAsync that allows specification of the return type.
+        /// </summary>
+        /// <param name="i_RequestUri">URI of the http resources(Must complete the BaseUri defined in the HttpExtensions class).</param>
+        /// <returns>A response object if any such are returned by the method.
+        /// This object is returned as a dynamic.</returns>
+        public static async Task<T> GetMethodAsync<T>(this HttpClient i_HttpClient, string i_RequestUri)
+        {
+            //Send the request.
+            HttpResponseMessage response = await i_HttpClient.GetAsync(new Uri(new Uri(BaseUri), i_RequestUri)).ConfigureAwait(false);
+
+            //Obtain the result and deserialize it.
+            string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return (T)JsonConvert.DeserializeObject(jsonResponse, typeof(T));
+        }
     }
 }
