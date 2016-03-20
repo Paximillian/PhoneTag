@@ -27,7 +27,7 @@ namespace PhoneTag.WebServices.Controllers
         private Task ping()
         {
             Mongo.Database.GetCollection<BsonDocument>("myCollection");
-
+            return new Task(() => { });
         }
 
         [Route("api/init")]
@@ -43,22 +43,22 @@ namespace PhoneTag.WebServices.Controllers
             
             string message = "";
             
-            collection.InsertManyAsync(new List<BsonDocument>() { null }, )
+            //collection.InsertManyAsync(new List<BsonDocument>() { null }, )
 
-            using (var cursor = await collection.FindAsync(filter))
-            {
-                while (await cursor.MoveNextAsync())
-                {
-                    var batch = cursor.Current;
-                    foreach (var document in batch)
-                    {
-                        // process document
-                        BsonElement res = new BsonElement("x", "error");
-                        document.TryGetElement("x", out res);
-                        message += res.Value;
-                    }
-                }
-            }
+            //using (var cursor = await collection.FindAsync(filter))
+            //{
+            //    while (await cursor.MoveNextAsync())
+            //    {
+            //        var batch = cursor.Current;
+            //        foreach (var document in batch)
+            //        {
+            //            // process document
+            //            BsonElement res = new BsonElement("x", "error");
+            //            document.TryGetElement("x", out res);
+            //            message += res.Value;
+            //        }
+            //    }
+            //}
 
             return message;
         }
