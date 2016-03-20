@@ -46,4 +46,9 @@
         android:enabled="false"
         android:text="Waiting for server..."
         android:editable="false" />
+    <TextView
+        android:text="dima lo haver"
+        android:layout_width="375.0dp"
+        android:layout_height="75.0dp"
+        android:id="@+id/textView1" />
 </LinearLayout>

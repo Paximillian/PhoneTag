@@ -17,10 +17,11 @@ using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using DeviceMotion.Plugin;
 using DeviceMotion.Plugin.Abstractions;
+using Android.Content.PM;
 
 namespace PhoneTag.Android
 {
-    [Activity(Label = "PhoneTag.Android", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "PhoneTag.Android", MainLauncher = true, Icon = "@drawable/icon", ScreenOrientation = ScreenOrientation.Portrait)]   
     public class MainActivity : Activity
     {
         Button button1;
@@ -30,12 +31,15 @@ namespace PhoneTag.Android
         Button button5;
         EditText editText1;
         IGeolocator locator = CrossGeolocator.Current;
+        TextView textView1;
 
         private Point m_CurrentOrientation;
 
         protected override void OnCreate(Bundle bundle)
         {
+
             base.OnCreate(bundle);
+            
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
@@ -48,6 +52,7 @@ namespace PhoneTag.Android
             button4 = FindViewById<Button>(Resource.Id.button4);
             button5 = FindViewById<Button>(Resource.Id.button5);
             editText1 = FindViewById<EditText>(Resource.Id.editText1);
+            textView1 = FindViewById<TextView>(Resource.Id.textView1);
 
             button1.Click += delegate { updatePosition(1); };
             button2.Click += delegate { updatePosition(2); };
@@ -62,12 +67,24 @@ namespace PhoneTag.Android
             locator.DesiredAccuracy = 1;
         }
 
+
         private void initDeviceMotionServices()
         {
-            CrossDeviceMotion.Current.Start(DeviceMotion.Plugin.Abstractions.MotionSensorType.Gyroscope, DeviceMotion.Plugin.Abstractions.MotionSensorDelay.Fastest);
+            
+            CrossDeviceMotion.Current.Start(DeviceMotion.Plugin.Abstractions.MotionSensorType.Compass, DeviceMotion.Plugin.Abstractions.MotionSensorDelay.Fastest);
             CrossDeviceMotion.Current.SensorValueChanged += (sender, e) => {
                 m_CurrentOrientation = new Point(((MotionVector)e.Value).X, ((MotionVector)e.Value).Y);
+                textView1.Text = e.Value.ToString();
+                
             };
+        }
+
+        private string trimDouble(double num)
+        {
+            string res;
+            res = num >= 0 ? "+" : "";
+            res += num.ToString("N4");
+            return res;
         }
 
         private async void checkServerStatus()
