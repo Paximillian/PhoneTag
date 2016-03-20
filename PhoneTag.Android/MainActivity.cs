@@ -55,7 +55,7 @@ namespace PhoneTag.Android
             button4.Click += delegate { shoot(2); };
             button5.Click += delegate { clear(); };
 
-            checkServerStatus();
+            //checkServerStatus();
 
             initDeviceMotionServices();
 
