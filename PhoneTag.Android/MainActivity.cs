@@ -32,6 +32,9 @@ namespace PhoneTag.Android
         EditText editText1;
         IGeolocator locator = CrossGeolocator.Current;
         TextView textView1;
+        TextView textView2;
+        TextView textView3;
+        TextView textView4;
 
         private Point m_CurrentOrientation;
 
@@ -53,6 +56,9 @@ namespace PhoneTag.Android
             button5 = FindViewById<Button>(Resource.Id.button5);
             editText1 = FindViewById<EditText>(Resource.Id.editText1);
             textView1 = FindViewById<TextView>(Resource.Id.textView1);
+            textView2 = FindViewById<TextView>(Resource.Id.textView2);
+            textView3 = FindViewById<TextView>(Resource.Id.textView3);
+            textView4 = FindViewById<TextView>(Resource.Id.textView4);
 
             button1.Click += delegate { updatePosition(1); };
             button2.Click += delegate { updatePosition(2); };
@@ -71,11 +77,17 @@ namespace PhoneTag.Android
         private void initDeviceMotionServices()
         {
             
-            CrossDeviceMotion.Current.Start(DeviceMotion.Plugin.Abstractions.MotionSensorType.Compass, DeviceMotion.Plugin.Abstractions.MotionSensorDelay.Fastest);
+            CrossDeviceMotion.Current.Start(DeviceMotion.Plugin.Abstractions.MotionSensorType.Accelerometer, DeviceMotion.Plugin.Abstractions.MotionSensorDelay.Default);
+            CrossDeviceMotion.Current.Start(DeviceMotion.Plugin.Abstractions.MotionSensorType.Compass, DeviceMotion.Plugin.Abstractions.MotionSensorDelay.Default);
+            CrossDeviceMotion.Current.Start(DeviceMotion.Plugin.Abstractions.MotionSensorType.Gyroscope, DeviceMotion.Plugin.Abstractions.MotionSensorDelay.Default);
+            CrossDeviceMotion.Current.Start(DeviceMotion.Plugin.Abstractions.MotionSensorType.Magnetometer, DeviceMotion.Plugin.Abstractions.MotionSensorDelay.Default);
             CrossDeviceMotion.Current.SensorValueChanged += (sender, e) => {
-                m_CurrentOrientation = new Point(((MotionVector)e.Value).X, ((MotionVector)e.Value).Y);
-                textView1.Text = e.Value.ToString();
-                
+
+                 m_CurrentOrientation = new Point(((MotionVector)e.Value).X, ((MotionVector)e.Value).Y);
+                 textView1.Text = "X = " + trimDouble(m_CurrentOrientation.X) + System.Environment.NewLine +
+                "Y = " + trimDouble(m_CurrentOrientation.Y) + System.Environment.NewLine +
+                "Z = " + trimDouble(((MotionVector)e.Value).Z);
+                //textView1.Text += e.Value.ToString();
             };
         }
 
@@ -83,7 +95,7 @@ namespace PhoneTag.Android
         {
             string res;
             res = num >= 0 ? "+" : "";
-            res += num.ToString("N4");
+            res += num.ToString("N1");
             return res;
         }
 
