@@ -8,16 +8,13 @@ using System.Web;
 using System.Web.Http;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Linq;
 using System.IO;
-using Newtonsoft.Json;
-using MongoDB.Bson.Serialization;
 
 namespace PhoneTag.WebServices.Controllers
 {
-    public class UserController : ApiController
+    public class RoomController : ApiController
     {
-        [Route("api/users/create")]
+        [Route("api/rooms/create")]
         [HttpPost]
         public async Task<bool> CreateUser(User i_NewUser)
         {
@@ -35,7 +32,7 @@ namespace PhoneTag.WebServices.Controllers
             return success;
         }
 
-        [Route("api/users/{i_Id}")]
+        [Route("api/rooms/{i_Id}")]
         [HttpGet]
         public async Task<User> GetUser(string i_Id)
         {
@@ -43,12 +40,11 @@ namespace PhoneTag.WebServices.Controllers
 
             try
             {
-                FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("Username", i_Id);
+                FilterDefinition<User> filter = Builders<User>.Filter.Eq("User:Username", i_Id);
 
-                using (IAsyncCursor<User> cursor = await Mongo.Database.GetCollection<BsonDocument>("Users").FindAsync<User>(filter))
+                using (IAsyncCursor<User> cursor = await Mongo.Database.GetCollection<User>("Users").FindAsync<User>(filter))
                 {
                     foundUser = await cursor.SingleAsync();
-                    //foundUser = BsonSerializer.Deserialize<User>(resultDoc);
                 }
             }
             catch (Exception e)

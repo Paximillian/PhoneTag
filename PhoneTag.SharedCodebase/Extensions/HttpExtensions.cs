@@ -26,7 +26,8 @@ namespace PhoneTag.SharedCodebase
             //Serialize the input parameter and send the request.
             i_HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             string jsonContent = JsonConvert.SerializeObject(i_Content);
-            HttpResponseMessage response = await i_HttpClient.PostAsync(new Uri(new Uri(BaseUri), i_RequestUri), new StringContent(jsonContent, Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            StringContent stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await i_HttpClient.PostAsync(new Uri(new Uri(BaseUri), i_RequestUri), stringContent).ConfigureAwait(false);
 
             //Obtain the result and deserialize it.
             string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -34,7 +35,7 @@ namespace PhoneTag.SharedCodebase
         }
 
         /// <summary>
-        /// Sends a POST request to the given http resource with an optional parameter.
+        /// Sends a POST request to the given http resource.
         /// </summary>
         /// <param name="i_RequestUri">URI of the http resources(Must complete the BaseUri defined in the HttpExtensions class).</param>
         /// <returns>A response object if any such are returned by the method.

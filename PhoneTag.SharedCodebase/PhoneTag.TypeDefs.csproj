@@ -34,6 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Model\GameMode.cs" />
+    <Compile Include="Model\GameRoom.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\Utility\DeviceLocationInfo.cs" />
     <Compile Include="Extensions\HttpExtensions.cs" />
@@ -48,6 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

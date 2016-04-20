@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using PhoneTag.SharedCodebase.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +30,25 @@ namespace PhoneTag.WebServices
                 errorMessage = e.Message;
             }
 
+            rebuildIndexes();
+
             return errorMessage;
+        }
+
+        private static void rebuildIndexes()
+        {
+            //If the database is out of date, rebuild the indexes.
+            if (!Mongo.Database.GetCollection<BsonDocument>("FloatingValues").FindSync(Builders<BsonDocument>.Filter.Eq("Ready", "true")).Any())
+            {
+                Database.GetCollection<User>("Users").Indexes.DropAll();
+
+                Database.GetCollection<User>("Users").Indexes.CreateOne(
+                    Builders<User>.IndexKeys.Ascending("Username"),
+                    new CreateIndexOptions<User>() { Unique = true }
+                );
+
+                Database.GetCollection<BsonDocument>("FloatingValues").InsertOne(new BsonDocument { { "Ready", "true" } });
+            }
         }
     }
 }

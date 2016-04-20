@@ -31,7 +31,7 @@ namespace PhoneTag.WebServices.Controllers
         private async Task<string> ping()
         {
             try {
-                var col = Mongo.Database.GetCollection<BsonDocument>("myCollection");
+                IMongoCollection<BsonDocument> col = Mongo.Database.GetCollection<BsonDocument>("myCollection");
                 CreateIndexOptions creationOptions = new CreateIndexOptions();
                 creationOptions.ExpireAfter = new TimeSpan(TimeSpan.TicksPerSecond * 5);
                 IndexKeysDefinition<BsonDocument> keys = Builders<BsonDocument>.IndexKeys.Ascending("id");
@@ -39,7 +39,7 @@ namespace PhoneTag.WebServices.Controllers
                 await col.Indexes.CreateOneAsync(keys, creationOptions);
                 for (int i = 0; i < 10; ++i)
                 {
-                    col.InsertOne(new BsonDocument { { "id", DateTime.Now.AddSeconds(i) }, { "User", new User("user"+ i.ToString()).ToBsonDocument() } });
+                    //col.InsertOne(new BsonDocument { { "id", DateTime.Now.AddSeconds(i) }, { "User", new User("user"+ i.ToString()).ToBsonDocument() } });
                 }
             }
             catch(Exception e)
@@ -87,6 +87,8 @@ namespace PhoneTag.WebServices.Controllers
         [HttpGet]
         public async Task<string> ClearPositions()
         {
+            await Mongo.Database.GetCollection<BsonDocument>("Users").DeleteManyAsync(new BsonDocument());
+            await Mongo.Database.GetCollection<BsonDocument>("Test").DeleteManyAsync(new BsonDocument());
             await Mongo.Database.GetCollection<BsonDocument>("myCollection").DeleteManyAsync(new BsonDocument());
             return "cleared";
         }
